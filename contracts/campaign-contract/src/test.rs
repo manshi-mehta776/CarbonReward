@@ -31,6 +31,7 @@ fn full_happy_path_flow() {
     let participant = Address::generate(&env);
 
     let (token_addr, token_admin_client, token_client) = create_token_contract(&env, &admin);
+    token_admin_client.mint(&org, &10_000);
     token_admin_client.mint(&sponsor, &10_000);
 
     let contract_id = env.register(CampaignContract, ());
@@ -81,7 +82,8 @@ fn rejects_double_join() {
     let admin = Address::generate(&env);
     let org = Address::generate(&env);
     let participant = Address::generate(&env);
-    let (token_addr, _, _) = create_token_contract(&env, &admin);
+    let (token_addr, token_admin, _) = create_token_contract(&env, &admin);
+    token_admin.mint(&org, &10_000);
 
     let contract_id = env.register(CampaignContract, ());
     let client = CampaignContractClient::new(&env, &contract_id);
@@ -109,7 +111,8 @@ fn unapproved_supervisor_cannot_verify() {
     let org = Address::generate(&env);
     let rogue_supervisor = Address::generate(&env);
     let participant = Address::generate(&env);
-    let (token_addr, _, _) = create_token_contract(&env, &admin);
+    let (token_addr, token_admin, _) = create_token_contract(&env, &admin);
+    token_admin.mint(&org, &10_000);
 
     let contract_id = env.register(CampaignContract, ());
     let client = CampaignContractClient::new(&env, &contract_id);
@@ -144,7 +147,8 @@ fn cannot_claim_without_verification() {
     let admin = Address::generate(&env);
     let org = Address::generate(&env);
     let participant = Address::generate(&env);
-    let (token_addr, _, _) = create_token_contract(&env, &admin);
+    let (token_addr, token_admin, _) = create_token_contract(&env, &admin);
+    token_admin.mint(&org, &10_000);
 
     let contract_id = env.register(CampaignContract, ());
     let client = CampaignContractClient::new(&env, &contract_id);
@@ -164,42 +168,30 @@ fn cannot_claim_without_verification() {
 }
 
 #[test]
-fn insufficient_pool_blocks_claim() {
+#[should_panic(expected = "contract call failed")]
+fn create_campaign_fails_without_funds() {
     let env = Env::default();
     env.mock_all_auths();
 
     let admin = Address::generate(&env);
     let org = Address::generate(&env);
     let supervisor = Address::generate(&env);
-    let participant = Address::generate(&env);
     let (token_addr, _, _) = create_token_contract(&env, &admin);
+    // Deliberately NOT minting tokens to org
 
     let contract_id = env.register(CampaignContract, ());
     let client = CampaignContractClient::new(&env, &contract_id);
     client.initialize(&admin);
     client.approve_supervisor(&supervisor);
 
-    let campaign_id = client.create_campaign(
+    // This should panic because org doesn't have 2500 tokens (500 * 5)
+    client.create_campaign(
         &org,
         &String::from_str(&env, "Water Conservation"),
         &500,
         &token_addr,
         &5,
     );
-    // No fund_pool call -> pool_balance is 0
-
-    client.join_campaign(&participant, &campaign_id);
-    client.submit_proof(&participant, &campaign_id, &String::from_str(&env, "hash"));
-    client.verify_activity(
-        &supervisor,
-        &campaign_id,
-        &participant,
-        &true,
-        &String::from_str(&env, "ok"),
-    );
-
-    let result = client.try_claim_reward(&participant, &campaign_id);
-    assert_eq!(result, Err(Ok(ContractError::InsufficientPool)));
 }
 
 #[test]
@@ -211,7 +203,8 @@ fn timestamps_recorded_correctly() {
     let admin = Address::generate(&env);
     let org = Address::generate(&env);
     let participant = Address::generate(&env);
-    let (token_addr, _, _) = create_token_contract(&env, &admin);
+    let (token_addr, token_admin, _) = create_token_contract(&env, &admin);
+    token_admin.mint(&org, &10_000);
 
     let contract_id = env.register(CampaignContract, ());
     let client = CampaignContractClient::new(&env, &contract_id);
