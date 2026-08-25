@@ -5,6 +5,8 @@ import {
   signTransaction,
 } from "@stellar/freighter-api";
 
+import { Horizon } from "@stellar/stellar-sdk";
+
 /**
  * Thin wrapper around the Freighter browser extension API.
  * All calls degrade gracefully if Freighter isn't installed so the rest
@@ -26,6 +28,17 @@ export const wallet = {
     const addr = await getPublicKey();
     if (!addr) throw new Error("Failed to get public key");
     return addr;
+  },
+
+  async getBalance(address: string): Promise<string> {
+    try {
+      const server = new Horizon.Server("https://horizon-testnet.stellar.org");
+      const account = await server.loadAccount(address);
+      const native = account.balances.find((b) => b.asset_type === "native");
+      return native ? native.balance : "0";
+    } catch (err) {
+      return "0";
+    }
   },
 
   async signXdr(xdr: string, networkPassphrase: string): Promise<string> {

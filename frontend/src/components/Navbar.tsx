@@ -1,7 +1,9 @@
 import { Link, NavLink } from "react-router-dom";
 import { Leaf, Menu, X } from "lucide-react";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "../store/authStore";
+import { wallet } from "../lib/wallet";
 
 const links = [
   { to: "/campaigns", label: "Campaigns" },
@@ -12,6 +14,13 @@ const links = [
 export function Navbar() {
   const { user, logout } = useAuthStore();
   const [open, setOpen] = useState(false);
+
+  const { data: balance } = useQuery({
+    queryKey: ["wallet-balance", user?.walletAddress],
+    queryFn: () => wallet.getBalance(user!.walletAddress!),
+    enabled: !!user?.walletAddress,
+    refetchInterval: 10000,
+  });
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/40 bg-white/70 backdrop-blur-xl dark:bg-slate-950/70 dark:border-slate-800">
@@ -42,6 +51,12 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-3">
           {user ? (
             <>
+              {user.walletAddress && (
+                <div className="flex items-center gap-2 rounded-full border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 dark:border-slate-800 dark:text-slate-300" title={user.walletAddress}>
+                  <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
+                  {balance ? `${parseFloat(balance).toFixed(2)} XLM` : "..."}
+                </div>
+              )}
               <Link to="/dashboard" className="btn-secondary !py-2 !px-4 text-sm">
                 Dashboard
               </Link>

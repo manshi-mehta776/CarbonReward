@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Navbar } from "./components/Navbar";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { initAnalytics } from "./lib/analytics";
+import { useAuthStore } from "./store/authStore";
 
 import Landing from "./pages/Landing";
 import About from "./pages/About";
@@ -11,8 +12,15 @@ import Register from "./pages/Register";
 import CampaignMarketplace from "./pages/CampaignMarketplace";
 import CampaignDetails from "./pages/CampaignDetails";
 import ParticipantDashboard from "./pages/ParticipantDashboard";
+import OrganizationDashboard from "./pages/OrganizationDashboard";
 import Leaderboard from "./pages/Leaderboard";
 import NotFound from "./pages/NotFound";
+
+const DashboardRoute = () => {
+  const { user } = useAuthStore();
+  if (user?.role === "organization") return <OrganizationDashboard />;
+  return <ParticipantDashboard />;
+};
 
 export default function App() {
   useEffect(() => {
@@ -33,7 +41,7 @@ export default function App() {
           <Route path="/leaderboard" element={<Leaderboard />} />
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard" element={<ParticipantDashboard />} />
+            <Route path="/dashboard" element={<DashboardRoute />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

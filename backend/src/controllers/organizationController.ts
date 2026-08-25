@@ -14,7 +14,7 @@ export const createOrgSchema = z.object({
 });
 
 export async function createOrganization(req: Request, res: Response): Promise<void> {
-  const org = await Organization.create({ ...req.body, owner: req.auth!.sub, approved: false });
+  const org = await Organization.create({ ...req.body, owner: req.auth!.sub, approved: true });
   res.status(201).json({ success: true, data: org });
 }
 
