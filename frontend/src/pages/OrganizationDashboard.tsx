@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Wallet, Plus, Factory } from "lucide-react";
+import { Wallet, Plus } from "lucide-react";
 import { api } from "../lib/api";
 import { wallet } from "../lib/wallet";
 import { soroban } from "../lib/soroban";
@@ -20,7 +20,7 @@ export default function OrganizationDashboard() {
 
   const org = orgs?.[0];
 
-  const { data: campaigns, isLoading: loadingCampaigns } = useQuery({
+  const { data: campaigns } = useQuery({
     queryKey: ["org-campaigns", org?._id],
     queryFn: async () => (await api.get("/campaigns", { params: { organizationId: org._id } })).data.data as any[],
     enabled: !!org?._id,
@@ -39,17 +39,13 @@ export default function OrganizationDashboard() {
   const createCampaignMutation = useMutation({
     mutationFn: async (data: any) => {
       // 1. Send transaction on-chain
-      const txHash = await soroban.createCampaign(
+      await soroban.createCampaign(
         user!.walletAddress!,
         data.title,
         data.rewardPerParticipant,
         data.maxParticipants
       );
       toast.success("On-chain campaign created! Finalizing...");
-      
-      // 2. Fund pool
-      const totalReward = data.rewardPerParticipant * data.maxParticipants;
-      // Note: A real app would have a separate fundPool tx, or we do it here. Let's just create it on backend for now to save user prompt fatigue.
       
       // 3. Save to database
       return await api.post("/campaigns", { ...data, organizationId: org._id });
