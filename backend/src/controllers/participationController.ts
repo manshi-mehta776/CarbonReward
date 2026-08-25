@@ -12,7 +12,7 @@ export async function joinCampaign(req: Request, res: Response): Promise<void> {
   if (campaign.status !== "active") throw new AppError("Campaign is not open for joining", 400);
 
   const count = await Participation.countDocuments({ campaign: campaign._id });
-  if (count >= campaign.maxParticipants) throw new AppError("Campaign has reached its participant limit", 400);
+  if (count >= (campaign as unknown as { maxParticipants: number }).maxParticipants) throw new AppError("Campaign has reached its participant limit", 400);
 
   try {
     const participation = await Participation.create({
@@ -80,7 +80,7 @@ export async function verifyParticipation(req: Request, res: Response): Promise<
   };
   if (approved) {
     const campaign = participation.campaign as unknown as { rewardPerParticipant: number };
-    participation.reward.amount = campaign.rewardPerParticipant;
+    participation.reward = { amount: campaign.rewardPerParticipant };
   }
   await participation.save();
 
@@ -95,7 +95,7 @@ export async function verifyParticipation(req: Request, res: Response): Promise<
   res.json({ success: true, data: participation });
 }
 
-export async function pendingVerifications(req: Request, res: Response): Promise<void> {
+export async function pendingVerifications(_req: Request, res: Response): Promise<void> {
   const items = await Participation.find({ status: "proof_submitted" })
     .populate("campaign", "title organization")
     .populate("participant", "name email walletAddress");
@@ -116,16 +116,16 @@ export async function recordClaim(req: Request, res: Response): Promise<void> {
   const participation = await Participation.findById(req.params.id);
   if (!participation) throw new AppError("Participation not found", 404);
   if (participation.status !== "verified") throw new AppError("Reward is not yet claimable", 400);
-  if (participation.reward.claimTxHash) throw new AppError("Reward already claimed", 409);
+  if (participation.reward?.claimTxHash) throw new AppError("Reward already claimed", 409);
 
   participation.status = "claimed";
-  participation.reward.claimTxHash = req.body.claimTxHash;
-  participation.reward.claimedAt = new Date();
+  participation.reward!.claimTxHash = req.body.claimTxHash;
+  participation.reward!.claimedAt = new Date();
   await participation.save();
 
   track(req.auth!.sub, AnalyticsEvent.REWARD_CLAIMED, {
     participationId: participation._id.toString(),
-    amount: participation.reward.amount,
+    amount: participation.reward?.amount,
   });
   res.json({ success: true, data: participation });
 }

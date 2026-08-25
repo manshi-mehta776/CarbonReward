@@ -30,7 +30,7 @@ export const addSupervisorSchema = z.object({
 export async function addSupervisor(req: Request, res: Response): Promise<void> {
   const org = await Organization.findById(req.params.id);
   if (!org) throw new AppError("Organization not found", 404);
-  if (org.owner.toString() !== req.auth!.sub) throw new AppError("Not authorized", 403);
+  if (!org.owner || org.owner.toString() !== req.auth!.sub) throw new AppError("Not authorized", 403);
 
   const user = await User.findById(req.body.userId);
   if (!user || user.role !== "supervisor") throw new AppError("Target user must have the supervisor role", 400);
@@ -45,7 +45,7 @@ export async function addSupervisor(req: Request, res: Response): Promise<void> 
 export async function orgAnalytics(req: Request, res: Response): Promise<void> {
   const org = await Organization.findById(req.params.id);
   if (!org) throw new AppError("Organization not found", 404);
-  if (org.owner.toString() !== req.auth!.sub) throw new AppError("Not authorized", 403);
+  if (!org.owner || org.owner.toString() !== req.auth!.sub) throw new AppError("Not authorized", 403);
 
   const { Campaign } = await import("../models/Campaign.js");
   const { Participation } = await import("../models/Participation.js");
@@ -63,7 +63,7 @@ export async function orgAnalytics(req: Request, res: Response): Promise<void> {
       verifiedContributions: participations.filter((p) => p.status === "verified" || p.status === "claimed").length,
       rewardsDistributed: participations
         .filter((p) => p.status === "claimed")
-        .reduce((sum, p) => sum + (p.reward.amount ?? 0), 0),
+        .reduce((sum, p) => sum + (p.reward?.amount ?? 0), 0),
     },
   });
 }

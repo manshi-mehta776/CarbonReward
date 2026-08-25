@@ -1,7 +1,7 @@
 import {
   isConnected,
-  requestAccess,
-  getAddress,
+  setAllowed,
+  getPublicKey,
   signTransaction,
 } from "@stellar/freighter-api";
 
@@ -14,24 +14,23 @@ import {
 export const wallet = {
   async isAvailable(): Promise<boolean> {
     try {
-      const res = await isConnected();
-      return !res.error;
+      return await isConnected();
     } catch {
       return false;
     }
   },
 
   async connect(): Promise<string> {
-    const access = await requestAccess();
-    if (access.error) throw new Error(access.error);
-    const addr = await getAddress();
-    if (addr.error) throw new Error(addr.error);
-    return addr.address;
+    const access = await setAllowed();
+    if (!access) throw new Error("User denied connection");
+    const addr = await getPublicKey();
+    if (!addr) throw new Error("Failed to get public key");
+    return addr;
   },
 
   async signXdr(xdr: string, networkPassphrase: string): Promise<string> {
     const result = await signTransaction(xdr, { networkPassphrase });
-    if (result.error) throw new Error(result.error);
-    return result.signedTxXdr;
+    if (!result) throw new Error("Transaction signature failed");
+    return result as unknown as string;
   },
 };

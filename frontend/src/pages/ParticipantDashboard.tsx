@@ -24,7 +24,7 @@ export default function ParticipantDashboard() {
         return;
       }
       const address = await wallet.connect();
-      const res = await api.post("/auth/wallet", { walletAddress: address });
+      await api.post("/auth/wallet", { walletAddress: address });
       if (user && token) setSession({ ...user, walletAddress: address }, token);
       toast.success("Wallet connected!");
     } catch (err: any) {
