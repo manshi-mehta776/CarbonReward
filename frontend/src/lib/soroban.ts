@@ -1,4 +1,4 @@
-import { Contract, nativeToScVal, Address, TransactionBuilder, Networks } from "@stellar/stellar-sdk";
+import { Contract, nativeToScVal, Address, TransactionBuilder, Networks, Asset } from "@stellar/stellar-sdk";
 import { wallet } from "./wallet";
 import { rpc } from "@stellar/stellar-sdk";
 
@@ -41,17 +41,18 @@ export const soroban = {
     const source = await rpcServer.getAccount(organizationAddress);
     
     const rewardInStroops = Math.floor(rewardPerParticipant * 10000000);
+    const networkPassphrase = Networks[NETWORK as keyof typeof Networks];
 
     const tx = new TransactionBuilder(source, {
       fee: "100000",
-      networkPassphrase: Networks[NETWORK as keyof typeof Networks],
+      networkPassphrase,
     })
       .addOperation(
         contract.call("create_campaign",
           new Address(organizationAddress).toScVal(),
           nativeToScVal(name, { type: "string" }),
           nativeToScVal(rewardInStroops, { type: "i128" }),
-          new Address("CDLZFC3SYJZAIFVFRESPE76UM4Z4C2M7U7Y3T52F6H3TPIZ2P2XN3N6N").toScVal(),
+          new Address(Asset.native().contractId(networkPassphrase)).toScVal(),
           nativeToScVal(maxParticipants, { type: "u32" })
         )
       )
