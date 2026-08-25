@@ -177,40 +177,112 @@ export default function OrganizationDashboard() {
           </div>
         </div>
 
-        <div className="lg:col-span-2">
-          <h2 className="mb-4 text-xl font-semibold text-slate-900 dark:text-white">Active Campaigns</h2>
-          <div className="glass-card overflow-hidden">
-            <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-left text-slate-500 dark:bg-slate-800">
-                <tr>
-                  <th className="px-4 py-3">Title</th>
-                  <th className="px-4 py-3">Reward</th>
-                  <th className="px-4 py-3">Participants</th>
-                  <th className="px-4 py-3">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {campaigns?.map((c) => (
-                  <tr key={c._id} className="border-t border-slate-100 dark:border-slate-800">
-                    <td className="px-4 py-3 font-medium text-slate-800 dark:text-white">{c.title}</td>
-                    <td className="px-4 py-3">{c.rewardPerParticipant} {c.rewardTokenSymbol}</td>
-                    <td className="px-4 py-3">0 / {c.maxParticipants}</td>
-                    <td className="px-4 py-3">
-                      <span className="rounded-full bg-emerald-100 px-2 py-1 text-emerald-700">{c.status}</span>
-                    </td>
-                  </tr>
-                ))}
-                {(!campaigns || campaigns.length === 0) && (
+        <div className="lg:col-span-2 space-y-6">
+          <div>
+            <h2 className="mb-4 text-xl font-semibold text-slate-900 dark:text-white">Active Campaigns</h2>
+            <div className="glass-card overflow-hidden">
+              <table className="w-full text-sm">
+                <thead className="bg-slate-50 text-left text-slate-500 dark:bg-slate-800">
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-slate-400">
-                      No campaigns created yet.
-                    </td>
+                    <th className="px-4 py-3">Title</th>
+                    <th className="px-4 py-3">Reward</th>
+                    <th className="px-4 py-3">Participants</th>
+                    <th className="px-4 py-3">Status</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {campaigns?.map((c) => (
+                    <tr key={c._id} className="border-t border-slate-100 dark:border-slate-800">
+                      <td className="px-4 py-3 font-medium text-slate-800 dark:text-white">{c.title}</td>
+                      <td className="px-4 py-3">{c.rewardPerParticipant} {c.rewardTokenSymbol}</td>
+                      <td className="px-4 py-3">0 / {c.maxParticipants}</td>
+                      <td className="px-4 py-3">
+                        <span className="rounded-full bg-emerald-100 px-2 py-1 text-emerald-700">{c.status}</span>
+                      </td>
+                    </tr>
+                  ))}
+                  {(!campaigns || campaigns.length === 0) && (
+                    <tr>
+                      <td colSpan={4} className="px-4 py-8 text-center text-slate-400">
+                        No campaigns created yet.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
+          
+          <PendingVerifications />
         </div>
+      </div>
+    </div>
+  );
+}
+
+function PendingVerifications() {
+  const queryClient = useQueryClient();
+  const { data: pending, isLoading } = useQuery({
+    queryKey: ["pending-verifications"],
+    queryFn: async () => (await api.get("/participations/pending")).data.data as any[],
+  });
+
+  const verifyMutation = useMutation({
+    mutationFn: async ({ id, approved }: { id: string; approved: boolean }) =>
+      await api.post(`/participations/${id}/verify`, { approved, comment: approved ? "Great job!" : "Invalid proof" }),
+    onSuccess: () => {
+      toast.success("Verification submitted!");
+      queryClient.invalidateQueries({ queryKey: ["pending-verifications"] });
+    },
+    onError: (err: any) => toast.error(err.response?.data?.message ?? "Failed to verify"),
+  });
+
+  if (isLoading) return <div>Loading pending verifications...</div>;
+  if (!pending || pending.length === 0) return null;
+
+  return (
+    <div>
+      <h2 className="mb-4 text-xl font-semibold text-slate-900 dark:text-white">Pending Verifications</h2>
+      <div className="glass-card overflow-hidden">
+        <table className="w-full text-sm">
+          <thead className="bg-slate-50 text-left text-slate-500 dark:bg-slate-800">
+            <tr>
+              <th className="px-4 py-3">Participant</th>
+              <th className="px-4 py-3">Campaign</th>
+              <th className="px-4 py-3">Proof</th>
+              <th className="px-4 py-3 text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pending.map((p) => (
+              <tr key={p._id} className="border-t border-slate-100 dark:border-slate-800">
+                <td className="px-4 py-3 font-medium text-slate-800 dark:text-white">{p.participant?.name || "Participant"}</td>
+                <td className="px-4 py-3">{p.campaign?.title}</td>
+                <td className="px-4 py-3">
+                  <a href={p.proof?.mediaUrls?.[0]} target="_blank" rel="noreferrer" className="text-brand-600 hover:underline">
+                    View Image
+                  </a>
+                </td>
+                <td className="px-4 py-3 text-right space-x-2">
+                  <button
+                    onClick={() => verifyMutation.mutate({ id: p._id, approved: true })}
+                    disabled={verifyMutation.isPending}
+                    className="rounded bg-emerald-100 px-3 py-1 font-medium text-emerald-700 hover:bg-emerald-200"
+                  >
+                    Approve
+                  </button>
+                  <button
+                    onClick={() => verifyMutation.mutate({ id: p._id, approved: false })}
+                    disabled={verifyMutation.isPending}
+                    className="rounded bg-red-100 px-3 py-1 font-medium text-red-700 hover:bg-red-200"
+                  >
+                    Reject
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

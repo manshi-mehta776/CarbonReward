@@ -11,8 +11,8 @@ import { validate } from "../middleware/validate.js";
 
 const router = Router();
 
-router.get("/pending", requireAuth, requireRole("supervisor"), pendingVerifications);
-router.post("/:id/verify", requireAuth, requireRole("supervisor"), validate(verifySchema), verifyParticipation);
+router.get("/pending", requireAuth, requireRole("supervisor", "organization"), pendingVerifications);
+router.post("/:id/verify", requireAuth, requireRole("supervisor", "organization"), validate(verifySchema), verifyParticipation);
 router.post("/:id/claim", requireAuth, requireRole("participant"), validate(claimSchema), recordClaim);
 
 export default router;
