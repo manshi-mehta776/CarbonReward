@@ -5,7 +5,8 @@
 ## 🚀 Quick Links
 - **Live Platform**: [carbon-reward.vercel.app](https://carbon-reward.vercel.app/)
 - **Demo Video**: [Placeholder]
-- **Contract Deployment Address**: `[Placeholder]`
+- **Contract Deployment Address**: `CCOBDHZRQKRIMAJRQ3ULVPT6WUQYEHXIW25YIJBWIRKD75AXM3BMMP7P`
+- **Example Successful Transaction (Claim Reward)**: [View on Stellar Expert](https://stellar.expert/explorer/testnet/tx/d9dfbfb868039e69470fcb1f0dcb85475b9a9f07e848721a18c8889c6e6f3785)
 - **User Feedback Form**: [Placeholder]
 - **User Feedback Responses**: [Placeholder]
 
