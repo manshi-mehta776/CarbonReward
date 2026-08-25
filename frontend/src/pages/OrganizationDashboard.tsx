@@ -39,13 +39,18 @@ export default function OrganizationDashboard() {
   const createCampaignMutation = useMutation({
     mutationFn: async (data: any) => {
       // 1. Send transaction on-chain
-      await soroban.createCampaign(
+      const txHash = await soroban.createCampaign(
         user!.walletAddress!,
         data.title,
         data.rewardPerParticipant,
         data.maxParticipants
       );
-      toast.success("On-chain campaign created! Finalizing...");
+      toast.success(
+        <div>
+          On-chain campaign created! <br />
+          <a href={`https://stellar.expert/explorer/testnet/tx/${txHash}`} target="_blank" rel="noreferrer" className="underline font-medium text-emerald-700">View on Stellar Expert</a>
+        </div>
+      );
       
       // 3. Save to database
       return await api.post("/campaigns", { ...data, organizationId: org._id });
