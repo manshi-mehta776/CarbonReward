@@ -97,7 +97,7 @@ export async function verifyParticipation(req: Request, res: Response): Promise<
 
 export async function pendingVerifications(_req: Request, res: Response): Promise<void> {
   const items = await Participation.find({ status: "proof_submitted" })
-    .populate("campaign", "title organization")
+    .populate("campaign", "title organization onChainId")
     .populate("participant", "name email walletAddress");
   res.json({ success: true, data: items });
 }
