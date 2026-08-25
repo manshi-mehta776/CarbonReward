@@ -67,16 +67,8 @@ export const soroban = {
       throw new Error("Contract needs state restoration. Simulation returned restore response.");
     }
     
-    // Throw sim to see exactly what Soroban RPC returned
-    throw new Error(`DEBUG_SIM: ${JSON.stringify(sim)}`);
-    
-    if (!(sim as any).result) {
-      console.error("Simulation returned invalid results:", sim);
-      throw new Error("Simulation returned invalid results. Check console for details.");
-    }
-    
     // @ts-ignore
-    const preparedTx = rpc.assembleTransaction(tx, networkPassphrase, sim).build();
+    const preparedTx = rpc.assembleTransaction(tx, sim).build();
     
     return await this.submitTransaction(preparedTx.toXDR());
   },
@@ -109,9 +101,8 @@ export const soroban = {
       throw new Error("Simulation returned invalid results. Check console for details.");
     }
     
-    const networkPassphrase = Networks[NETWORK as keyof typeof Networks];
     // @ts-ignore
-    const preparedTx = rpc.assembleTransaction(tx, networkPassphrase, sim).build();
+    const preparedTx = rpc.assembleTransaction(tx, sim).build();
     return await this.submitTransaction(preparedTx.toXDR());
   },
 
@@ -143,9 +134,8 @@ export const soroban = {
       throw new Error("Simulation returned invalid results. Check console for details.");
     }
     
-    const networkPassphrase = Networks[NETWORK as keyof typeof Networks];
     // @ts-ignore
-    const preparedTx = rpc.assembleTransaction(tx, networkPassphrase, sim).build();
+    const preparedTx = rpc.assembleTransaction(tx, sim).build();
     return await this.submitTransaction(preparedTx.toXDR());
   }
 };
