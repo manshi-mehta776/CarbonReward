@@ -67,10 +67,15 @@ export default function CampaignDetails() {
       if (participation.campaign?.onChainId !== undefined && participation.campaign?.onChainId !== null) {
         txHash = await soroban.claimReward(user!.walletAddress!, participation.campaign.onChainId);
       }
-      return await api.post(`/participations/${participation._id}/claim`, { claimTxHash: txHash });
+      return { response: await api.post(`/participations/${participation._id}/claim`, { claimTxHash: txHash }), txHash };
     },
-    onSuccess: () => {
-      toast.success("Reward claimed successfully!");
+    onSuccess: (data) => {
+      toast.success(
+        <div>
+          Reward claimed successfully! <br />
+          <a href={`https://stellar.expert/explorer/testnet/tx/${data.txHash}`} target="_blank" rel="noreferrer" className="underline font-medium text-emerald-700">View Receipt</a>
+        </div>
+      );
       queryClient.invalidateQueries({ queryKey: ["my-participations"] });
     },
     onError: (err: any) => toast.error(err.response?.data?.message ?? err.message ?? "Could not claim reward"),
