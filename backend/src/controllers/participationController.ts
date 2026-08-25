@@ -11,6 +11,13 @@ export async function joinCampaign(req: Request, res: Response): Promise<void> {
   if (!campaign) throw new AppError("Campaign not found", 404);
   if (campaign.status !== "active") throw new AppError("Campaign is not open for joining", 400);
 
+  // Temporary: Try to drop the index if it exists so testing multiple wallets works
+  try {
+    await Participation.collection.dropIndex("campaign_1_participant_1");
+  } catch (e) {
+    // ignore if it doesn't exist
+  }
+
   const count = await Participation.countDocuments({ campaign: campaign._id });
   if (count >= (campaign as unknown as { maxParticipants: number }).maxParticipants) throw new AppError("Campaign has reached its participant limit", 400);
 

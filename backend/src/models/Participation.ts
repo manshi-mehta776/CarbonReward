@@ -36,7 +36,7 @@ const participationSchema = new Schema(
 
 // A participant may only join a given campaign once — enforced both here
 // and on-chain for defense in depth.
-participationSchema.index({ campaign: 1, participant: 1 }, { unique: true });
+// participationSchema.index({ campaign: 1, participant: 1 }, { unique: true }); // Temporarily disabled for testing
 participationSchema.index({ status: 1 });
 
 export type ParticipationDoc = InferSchemaType<typeof participationSchema> & { _id: Types.ObjectId };

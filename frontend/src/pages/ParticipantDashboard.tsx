@@ -50,7 +50,24 @@ export default function ParticipantDashboard() {
         <StatCard icon={Wallet} label="Total Earned" value={`${totalEarned} XLM`} />
       </div>
 
-      {!user?.walletAddress && (
+      {user?.walletAddress ? (
+        <div className="glass-card mb-8 flex flex-col items-center gap-3 p-6 text-center sm:flex-row sm:justify-between sm:text-left">
+          <div>
+            <h3 className="font-semibold text-slate-900 dark:text-white">Wallet Connected</h3>
+            <p className="text-sm text-slate-500">{user.walletAddress}</p>
+          </div>
+          <button 
+            onClick={async () => {
+              await api.post("/auth/wallet", { walletAddress: null });
+              if (user && token) setSession({ ...user, walletAddress: null }, token);
+              toast.success("Wallet disconnected!");
+            }} 
+            className="btn-secondary shrink-0 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950"
+          >
+            Disconnect Wallet
+          </button>
+        </div>
+      ) : (
         <div className="glass-card mb-8 flex flex-col items-center gap-3 p-6 text-center sm:flex-row sm:justify-between sm:text-left">
           <div>
             <h3 className="font-semibold text-slate-900 dark:text-white">Connect your Freighter wallet</h3>
