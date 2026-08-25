@@ -7,8 +7,8 @@
 - **Demo Video**: [Placeholder]
 - **Contract Deployment Address**: `CCOBDHZRQKRIMAJRQ3ULVPT6WUQYEHXIW25YIJBWIRKD75AXM3BMMP7P`
 - **Example Successful Transaction (Claim Reward)**: [View on Stellar Expert](https://stellar.expert/explorer/testnet/tx/d9dfbfb868039e69470fcb1f0dcb85475b9a9f07e848721a18c8889c6e6f3785)
-- **User Feedback Form**: [Placeholder]
-- **User Feedback Responses**: [Placeholder]
+- **User Feedback Form**: [CarbonReward Beta Testing Form](https://docs.google.com/forms/d/e/1FAIpQLSdy9GCldotMFx6O7PuazOmqexL8BBFinqcjeeGKoTVzIu730w/viewform?usp=dialog)
+- **User Feedback Responses**: [Feedback Data Sheet](https://docs.google.com/spreadsheets/d/1LtJ3cbLrWwbaCOukuA0eQaoWDMuS9WJOLyEwm9YabXw/edit?usp=sharing)
 
 ---
 
