@@ -39,7 +39,7 @@ export default function OrganizationDashboard() {
   const createCampaignMutation = useMutation({
     mutationFn: async (data: any) => {
       // 1. Send transaction on-chain
-      const txHash = await soroban.createCampaign(
+      const { txHash, campaignId } = await soroban.createCampaign(
         user!.walletAddress!,
         data.title,
         data.rewardPerParticipant,
@@ -53,7 +53,7 @@ export default function OrganizationDashboard() {
       );
       
       // 3. Save to database
-      return await api.post("/campaigns", { ...data, organizationId: org._id });
+      return await api.post("/campaigns", { ...data, organizationId: org._id, onChainId: campaignId });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["org-campaigns"] });

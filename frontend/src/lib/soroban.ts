@@ -1,4 +1,4 @@
-import { Contract, nativeToScVal, Address, TransactionBuilder, Networks, Asset } from "@stellar/stellar-sdk";
+import { Contract, nativeToScVal, Address, TransactionBuilder, Networks, Asset, scValToNative } from "@stellar/stellar-sdk";
 import { wallet } from "./wallet";
 import { rpc } from "@stellar/stellar-sdk";
 
@@ -70,7 +70,17 @@ export const soroban = {
     // @ts-ignore
     const preparedTx = rpc.assembleTransaction(tx, sim).build();
     
-    return await this.submitTransaction(preparedTx.toXDR());
+    const txHash = await this.submitTransaction(preparedTx.toXDR());
+    let campaignId = 0;
+    try {
+      if (sim.result?.retval) {
+        campaignId = Number(scValToNative(sim.result.retval));
+      }
+    } catch(e) {
+      console.warn("Failed to parse campaignId from simulation", e);
+    }
+    
+    return { txHash, campaignId };
   },
 
   async joinCampaign(participantAddress: string, campaignId: number) {

@@ -17,6 +17,7 @@ export const createCampaignSchema = z.object({
     startDate: z.string(),
     endDate: z.string(),
     rules: z.string().optional(),
+    onChainId: z.number().optional(),
     location: z
       .object({ label: z.string().optional(), lat: z.number().optional(), lng: z.number().optional() })
       .optional(),
