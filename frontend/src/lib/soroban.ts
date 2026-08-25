@@ -71,7 +71,7 @@ export const soroban = {
       throw new Error("Simulation was not successful.");
     }
     
-    if (!sim.results || !sim.results[0] || !sim.results[0].xdr) {
+    if (!sim.result) {
       console.error("Simulation returned invalid results:", sim);
       throw new Error("Simulation returned invalid results. Check console for details.");
     }
@@ -106,7 +106,7 @@ export const soroban = {
     if (rpc.Api.isSimulationRestore(sim)) throw new Error("Contract needs state restoration.");
     if (!rpc.Api.isSimulationSuccess(sim)) throw new Error("Simulation was not successful.");
     
-    if (!sim.results || !sim.results[0] || !sim.results[0].xdr) {
+    if (!sim.result) {
       throw new Error("Simulation returned invalid results. Check console for details.");
     }
     
@@ -140,7 +140,7 @@ export const soroban = {
     if (rpc.Api.isSimulationRestore(sim)) throw new Error("Contract needs state restoration.");
     if (!rpc.Api.isSimulationSuccess(sim)) throw new Error("Simulation was not successful.");
     
-    if (!sim.results || !sim.results[0] || !sim.results[0].xdr) {
+    if (!sim.result) {
       throw new Error("Simulation returned invalid results. Check console for details.");
     }
     
