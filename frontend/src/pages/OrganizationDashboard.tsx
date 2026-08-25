@@ -16,6 +16,7 @@ export default function OrganizationDashboard() {
   const { data: orgs, isLoading: loadingOrgs } = useQuery({
     queryKey: ["my-organizations"],
     queryFn: async () => (await api.get("/organizations/me")).data.data as any[],
+    refetchInterval: 3000,
   });
 
   const org = orgs?.[0];
@@ -24,6 +25,7 @@ export default function OrganizationDashboard() {
     queryKey: ["org-campaigns", org?._id],
     queryFn: async () => (await api.get("/campaigns", { params: { organizationId: org._id } })).data.data as any[],
     enabled: !!org?._id,
+    refetchInterval: 3000,
   });
 
   const createOrgMutation = useMutation({
@@ -225,6 +227,7 @@ function PendingVerifications() {
   const { data: pending, isLoading, error } = useQuery({
     queryKey: ["pending-verifications"],
     queryFn: async () => (await api.get("/participations/pending")).data.data as any[],
+    refetchInterval: 3000,
   });
 
   const verifyMutation = useMutation({

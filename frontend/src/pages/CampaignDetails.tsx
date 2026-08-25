@@ -14,28 +14,31 @@ export default function CampaignDetails() {
   const { data, isLoading } = useQuery({
     queryKey: ["campaign", id],
     queryFn: async () => (await api.get(`/campaigns/${id}`)).data.data,
+    refetchInterval: 3000,
   });
 
   const { data: myParticipations } = useQuery({
     queryKey: ["my-participations"],
     queryFn: async () => (await api.get("/campaigns/me/participations")).data.data as any[],
     enabled: user?.role === "participant",
+    refetchInterval: 3000,
   });
 
   const participation = myParticipations?.find((p) => (p.campaign?._id || p.campaign) === id);
 
   const joinMutation = useMutation({
     mutationFn: async () => {
-      // 1. On-chain join (if campaign has on-chain ID, wait we need campaign on-chain ID)
-      // Wait, is there an on-chain join? No, the backend didn't save on-chain campaign IDs for participants to join. 
-      // Actually, Soroban `joinCampaign` requires campaignId (u64). Let's see if data.onChainId exists.
+      if (data?.onChainId !== undefined && data?.onChainId !== null) {
+        toast.success("Joining campaign on-chain... Please approve transaction.");
+        await soroban.joinCampaign(user!.walletAddress!, data.onChainId);
+      }
       return await api.post(`/campaigns/${id}/join`);
     },
     onSuccess: () => {
       toast.success("You joined the campaign! Upload your proof once you've completed the activity.");
       queryClient.invalidateQueries({ queryKey: ["my-participations"] });
     },
-    onError: (err: any) => toast.error(err.response?.data?.message ?? "Could not join campaign"),
+    onError: (err: any) => toast.error(err.response?.data?.message ?? err.message ?? "Could not join campaign"),
   });
 
   const submitProofMutation = useMutation({
@@ -51,7 +54,7 @@ export default function CampaignDetails() {
       toast.success("Proof submitted successfully! Waiting for verification.");
       queryClient.invalidateQueries({ queryKey: ["my-participations"] });
     },
-    onError: (err: any) => toast.error(err.response?.data?.message ?? "Could not submit proof"),
+    onError: (err: any) => toast.error(err.response?.data?.message ?? err.message ?? "Could not submit proof"),
   });
 
   const claimMutation = useMutation({
@@ -67,7 +70,7 @@ export default function CampaignDetails() {
       toast.success("Reward claimed successfully!");
       queryClient.invalidateQueries({ queryKey: ["my-participations"] });
     },
-    onError: (err: any) => toast.error(err.response?.data?.message ?? "Could not claim reward"),
+    onError: (err: any) => toast.error(err.response?.data?.message ?? err.message ?? "Could not claim reward"),
   });
 
   if (isLoading) return <div className="mx-auto max-w-4xl px-4 py-16"><div className="skeleton h-96" /></div>;
