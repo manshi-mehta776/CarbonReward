@@ -70,7 +70,7 @@ export const soroban = {
     // Throw sim to see exactly what Soroban RPC returned
     throw new Error(`DEBUG_SIM: ${JSON.stringify(sim)}`);
     
-    if (!sim.result) {
+    if (!(sim as any).result) {
       console.error("Simulation returned invalid results:", sim);
       throw new Error("Simulation returned invalid results. Check console for details.");
     }
