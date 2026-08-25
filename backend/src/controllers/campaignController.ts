@@ -29,7 +29,7 @@ export async function createCampaign(req: Request, res: Response): Promise<void>
   // if (!org.approved) throw new AppError("Organization must be approved by an admin before creating campaigns", 403);
   if (!org.owner || org.owner.toString() !== req.auth!.sub) throw new AppError("Not authorized for this organization", 403);
 
-  const campaign = await Campaign.create({ ...req.body, organization: org._id, status: "draft" });
+  const campaign = await Campaign.create({ ...req.body, organization: org._id, status: "active" });
   track(req.auth!.sub, AnalyticsEvent.CAMPAIGN_CREATED, { campaignId: campaign._id.toString() });
   res.status(201).json({ success: true, data: campaign });
 }
