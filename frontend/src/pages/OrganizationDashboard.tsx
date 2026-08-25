@@ -195,7 +195,7 @@ export default function OrganizationDashboard() {
                     <tr key={c._id} className="border-t border-slate-100 dark:border-slate-800">
                       <td className="px-4 py-3 font-medium text-slate-800 dark:text-white">{c.title}</td>
                       <td className="px-4 py-3">{c.rewardPerParticipant} {c.rewardTokenSymbol}</td>
-                      <td className="px-4 py-3">0 / {c.maxParticipants}</td>
+                      <td className="px-4 py-3">Up to {c.maxParticipants}</td>
                       <td className="px-4 py-3">
                         <span className="rounded-full bg-emerald-100 px-2 py-1 text-emerald-700">{c.status}</span>
                       </td>
@@ -222,7 +222,7 @@ export default function OrganizationDashboard() {
 
 function PendingVerifications() {
   const queryClient = useQueryClient();
-  const { data: pending, isLoading } = useQuery({
+  const { data: pending, isLoading, error } = useQuery({
     queryKey: ["pending-verifications"],
     queryFn: async () => (await api.get("/participations/pending")).data.data as any[],
   });
@@ -254,6 +254,10 @@ function PendingVerifications() {
             {isLoading ? (
               <tr>
                 <td colSpan={4} className="px-4 py-8 text-center text-slate-400">Loading pending verifications...</td>
+              </tr>
+            ) : error ? (
+              <tr>
+                <td colSpan={4} className="px-4 py-8 text-center text-red-500">Error: {(error as any).response?.data?.message || (error as Error).message}</td>
               </tr>
             ) : !pending || pending.length === 0 ? (
               <tr>
