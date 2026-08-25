@@ -25,7 +25,7 @@ jobs:
         run: npm test
         env:
           MONGODB_URI: mongodb://localhost:27017/test
-          JWT_SECRET: test_secret
+          JWT_SECRET: test_secret_1234567890
 
   frontend:
     runs-on: ubuntu-latest
