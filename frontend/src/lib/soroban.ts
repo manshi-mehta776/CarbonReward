@@ -71,6 +71,11 @@ export const soroban = {
       throw new Error("Simulation was not successful.");
     }
     
+    if (!sim.results || !sim.results[0] || !sim.results[0].xdr) {
+      console.error("Simulation returned invalid results:", sim);
+      throw new Error("Simulation returned invalid results. Check console for details.");
+    }
+    
     // @ts-ignore
     const preparedTx = rpc.assembleTransaction(tx, networkPassphrase, sim).build();
     
@@ -100,6 +105,11 @@ export const soroban = {
     if (rpc.Api.isSimulationError(sim)) throw new Error(sim.error);
     if (rpc.Api.isSimulationRestore(sim)) throw new Error("Contract needs state restoration.");
     if (!rpc.Api.isSimulationSuccess(sim)) throw new Error("Simulation was not successful.");
+    
+    if (!sim.results || !sim.results[0] || !sim.results[0].xdr) {
+      throw new Error("Simulation returned invalid results. Check console for details.");
+    }
+    
     const networkPassphrase = Networks[NETWORK as keyof typeof Networks];
     // @ts-ignore
     const preparedTx = rpc.assembleTransaction(tx, networkPassphrase, sim).build();
@@ -129,6 +139,11 @@ export const soroban = {
     if (rpc.Api.isSimulationError(sim)) throw new Error(sim.error);
     if (rpc.Api.isSimulationRestore(sim)) throw new Error("Contract needs state restoration.");
     if (!rpc.Api.isSimulationSuccess(sim)) throw new Error("Simulation was not successful.");
+    
+    if (!sim.results || !sim.results[0] || !sim.results[0].xdr) {
+      throw new Error("Simulation returned invalid results. Check console for details.");
+    }
+    
     const networkPassphrase = Networks[NETWORK as keyof typeof Networks];
     // @ts-ignore
     const preparedTx = rpc.assembleTransaction(tx, networkPassphrase, sim).build();
