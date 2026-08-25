@@ -55,6 +55,10 @@ export default function ParticipantDashboard() {
           <div>
             <h3 className="font-semibold text-slate-900 dark:text-white">Wallet Connected</h3>
             <p className="text-sm text-slate-500">{user.walletAddress}</p>
+            <p className="mt-1 text-sm text-amber-600 dark:text-amber-500">
+              Need testnet XLM for fees?{" "}
+              <a href="https://laboratory.stellar.org/#account-creator" target="_blank" rel="noreferrer" className="underline font-medium hover:text-amber-700">Get XLM from Faucet</a>
+            </p>
           </div>
           <button 
             onClick={async () => {
