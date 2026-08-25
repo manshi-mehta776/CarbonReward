@@ -4,7 +4,7 @@
 
 ## 🚀 Quick Links
 - **Live Platform**: [carbon-reward.vercel.app](https://carbon-reward.vercel.app/)
-- **Demo Video**: [Placeholder]
+- **Demo Video**: [Watch Demo on Google Drive](https://drive.google.com/file/d/1Ez6Co0ernqv7O6XftPSS0JY4NIf91yDY/view?usp=sharing)
 - **Contract Deployment Address**: `CCOBDHZRQKRIMAJRQ3ULVPT6WUQYEHXIW25YIJBWIRKD75AXM3BMMP7P`
 - **Example Successful Transaction (Claim Reward)**: [View on Stellar Expert](https://stellar.expert/explorer/testnet/tx/d9dfbfb868039e69470fcb1f0dcb85475b9a9f07e848721a18c8889c6e6f3785)
 - **User Feedback Form**: [CarbonReward Beta Testing Form](https://docs.google.com/forms/d/e/1FAIpQLSdy9GCldotMFx6O7PuazOmqexL8BBFinqcjeeGKoTVzIu730w/viewform?usp=dialog)
@@ -20,36 +20,64 @@ Participants, on the other hand, don't trust promises of future rewards or compl
 
 ---
 
+## 📸 Product Screenshots
+
+### Product UI (Homepage)
+![Homepage Screenshot](./screenshots/homepage.png)
+
+### Mobile Responsive Design
+![Mobile View Screenshot](./screenshots/mobile%20responsive%20ui.png)
+
+### Analytics & Monitoring
+![Analytics Screenshot](./screenshots/analytcs.png)
+
+---
+
 ## 👥 Users Onboarded & Feedback
 
-As part of our beta testing and user validation phase, we onboarded users to test the campaign creation and reward claiming flow on the Stellar Testnet. 
-
-| User ID | Name | Email | Wallet Address | Feedback Summary |
-|---------|------|-------|----------------|------------------|
-| 1 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
-| 2 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
-| 3 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
-| 4 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
-| 5 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
-| 6 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
-| 7 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
-| 8 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
-| 9 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
-| 10 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
+| User ID | Name | Email | Wallet Address | Role | Feedback Summary |
+|---------|------|-------|----------------|------|------------------|
+| 1 | Saranya Sa | saranyasa999@gmail.com | GCF6G3353E7SY6R2KJX47KUO7N22JJ43SP7CIS6TS3DAIRG6HT5OMW7G | Participant |  site disconnected my Freighter wallet every time I refreshed the page |
+| 2 | Ashok Tiwari | ashoktiwari9955@gmail.com | GAIU57CCHT7EBNG2ISWV3F3CLRIUQ32GVIZQFPV75DY6TMTFXTYZDO6D | Participant | You should add a loading spinner during the image upload process so users know it's working. |
+| 3 | Sunil Ghosh | 78sunilghosh@gmail.com | GAJ6DFDIPN7SOETR3YSS5N4BEZNRYVSRJFXZ4M7QFXEFDIS5CGVSZPUS | Participant | Got a weird fee error because my wallet balance was zero when I tried to claim |
+| 4 | Rajesh Sen | rajeshsen0@gmail.com | GDBZMAZPNCNHOUKAOGMAMX6KCOFWI6DBKZCSGNAG5YMZUJIZ2OK6L2NQ | Organization | Please add a batch approve feature! It takes way too long to approve 50 proofs individually |
+| 5 | Kiran Malhotra | kiranmalhotr12a@gmail.com | GAJDDQFE2KL3PYWMMTXK73DNCSSMGZAUDLSMZPIX6OKT6OUJCU3Y2QQP | Participant | blockchain is slow so I double clicked claim and got an error. You could disable the button while it's processing |
+| 6 | Shant Arav | shantanav7@gmail.com | GARG5YK76WWI54DLNKK32AYJDGJXQYTU3DPNWZ65LSG7U3LOW2QYRCIK | Participant | I joined a campaign only to realize it was already full. It would be super helpful to show a 'Full' badge on the homepage cards |
+| 7 | Simmi tiwari | simmitiwari770@gmail.com | GC4OCMCR57262JVD4VAUCAZH56TVDUFIVIXQK2VCMOYU3SKICPWR24JH | Organization | There is no way to tell a user why I rejected their proof. Suggest adding a text box for rejection reasons |
+| 8 |  soham patil |  sohamrpatil4220@gmail.com | GDOF4FEJ3TSK77TG24APQ3Q6X2WHM6N76LLTMX5TSBAS2R5FJBXSNM2L | Participant | Add a dashboard to track total lifetime impact and rewards earned |
+| 9 | JAYANT VAIBHAV | jayantvaibhavspj@gmail.com | GAW2TZETZNJ6JRMJQNEXRCZ54Z2MRW7YKHGUB2FVYAJ7OEMMT42BLNPW | Participant | My leftover XLM got stuck in the smart contract when the campaign ended early with fewer participants |
+| 10 | Rsnjan Mehta | mehtaranjana745@gmail.com | GDAJAKIZCUOGKMEWMP4WJ2ENHJKJM6HS7U7DOLV6T6FYGRHTER7RT4Z5 | Participant | I'm not familiar with crypto so I didn't know what 50 XLM meant. A tooltip showing the USD equivalent would be great |
+| 11 | Akash Mondal | 73akash58mondal@gmail.com  | GDLEUUZIMYT2ZHLJOPBEFOT4YNPGVKHMH65RHPZCL2VCO6WOEULUT4NM | Participant | Include category filters (like 'Tree Planting' vs 'Recycling') to make browsing easier |
 
 ---
 
 ## 🛠️ Feedback Implementation & Improvements
 
-Based on the feedback received from our onboarded users, we made several critical improvements to the platform.
-
 | User ID | Name | Email | Wallet Address | Feedback Summary | Improvement Made | Git Commit ID |
 |---------|------|-------|----------------|------------------|------------------|---------------|
-| 1 | [Placeholder] | [Placeholder] | [Placeholder] | Wallet signature was missing on claim | Integrated full on-chain `claim_reward` transaction via Freighter | `02aab5a` |
-| 2 | [Placeholder] | [Placeholder] | [Placeholder] | Verification was failing silently | Added `onChainId` to backend API and enforced on-chain `verify_activity` | `27fd839` |
-| 3 | [Placeholder] | [Placeholder] | [Placeholder] | Contract pool lacked funds | Added automatic token transfer to `create_campaign` | `e4121ad` |
-| 4 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
-| 5 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
+| 1 | Saranya Sa | saranyasa999@gmail.com | GCF6G3353E7SY6R2KJX47KUO7N22JJ43SP7CIS6TS3DAIRG6HT5OMW7G |  site disconnected my Freighter wallet every time I refreshed the page | Allowed wallet disconnection gracefully | [b8a631e](https://github.com/manshi-mehta776/CarbonReward/commit/b8a631e) |
+| 3 | Sunil Ghosh | 78sunilghosh@gmail.com | GAJ6DFDIPN7SOETR3YSS5N4BEZNRYVSRJFXZ4M7QFXEFDIS5CGVSZPUS | Got a weird fee error because my wallet balance was zero when I tried to claim | Added Faucet link for zero balance | [96b69fc](https://github.com/manshi-mehta776/CarbonReward/commit/96b69fc) |
+| 5 | Kiran Malhotra | kiranmalhotr12a@gmail.com | GAJDDQFE2KL3PYWMMTXK73DNCSSMGZAUDLSMZPIX6OKT6OUJCU3Y2QQP | blockchain is slow so I double clicked claim and got an error. You could disable the button while it's processing | Disabled Claim button during tx | [b870d81](https://github.com/manshi-mehta776/CarbonReward/commit/b870d81) |
+| 6 | Shant Arav | shantanav7@gmail.com | GARG5YK76WWI54DLNKK32AYJDGJXQYTU3DPNWZ65LSG7U3LOW2QYRCIK | I joined a campaign only to realize it was already full. It would be super helpful to show a 'Full' badge on the homepage cards | Added "Full" badge to cards | [05796be](https://github.com/manshi-mehta776/CarbonReward/commit/05796be) |
+| 7 | Simmi tiwari | simmitiwari770@gmail.com | GC4OCMCR57262JVD4VAUCAZH56TVDUFIVIXQK2VCMOYU3SKICPWR24JH | There is no way to tell a user why I rejected their proof. Suggest adding a text box for rejection reasons | Added rejection reason prompt | [3761275](https://github.com/manshi-mehta776/CarbonReward/commit/3761275) |
+
+---
+
+## 🔗 Proof of Transaction
+
+| Name | Wallet Address | Role | Transaction Link |
+|------|----------------|------|------------------|
+| Saranya Sa | GCF6G3353E7SY6R2KJX47KUO7N22JJ43SP7CIS6TS3DAIRG6HT5OMW7G | Participant | [View Tx](https://stellar.expert/explorer/testnet/tx/d9dfbfb868039e69470fcb1f0dcb85475b9a9f07e848721a18c8889c6e6f3785) |
+| Ashok Tiwari | GAIU57CCHT7EBNG2ISWV3F3CLRIUQ32GVIZQFPV75DY6TMTFXTYZDO6D | Participant | [View Tx](https://stellar.expert/explorer/testnet/tx/cb9adf4329f5e71df9bfdc5c7e9af19388fd64b6e7240c0d35045ecf650850e7) |
+| Sunil Ghosh | GAJ6DFDIPN7SOETR3YSS5N4BEZNRYVSRJFXZ4M7QFXEFDIS5CGVSZPUS | Participant | [View Tx](https://stellar.expert/explorer/testnet/tx/bddb94ecae19adfe33076b1589f7ee97f1b635e98d0d8fc4189344f7bce3e733) |
+| Rajesh Sen | GDBZMAZPNCNHOUKAOGMAMX6KCOFWI6DBKZCSGNAG5YMZUJIZ2OK6L2NQ | Organization | [View Tx](https://stellar.expert/explorer/testnet/tx/b0b82d5e9b5732943d2338247cac59e9fd84f02e588bc2b10431856f43b8d7e4) |
+| Kiran Malhotra | GAJDDQFE2KL3PYWMMTXK73DNCSSMGZAUDLSMZPIX6OKT6OUJCU3Y2QQP | Participant | [View Tx](https://stellar.expert/explorer/testnet/tx/a9017479dc691f64f5f106863f909c275bf32a0b5f548e6cb92ed6fd7635f458) |
+| Shant Arav | GARG5YK76WWI54DLNKK32AYJDGJXQYTU3DPNWZ65LSG7U3LOW2QYRCIK | Participant | [View Tx](https://stellar.expert/explorer/testnet/tx/bd845893fe51c102840305379c53012bf85068e4c2a467c0ade77421fc680982) |
+| Simmi tiwari | GC4OCMCR57262JVD4VAUCAZH56TVDUFIVIXQK2VCMOYU3SKICPWR24JH | Organization | [View Tx](https://stellar.expert/explorer/testnet/tx/0284ba53bbfad0513b84eb61c428801f59c3fd4676a66b07d07b8e08e520b2aa) |
+|  soham patil | GDOF4FEJ3TSK77TG24APQ3Q6X2WHM6N76LLTMX5TSBAS2R5FJBXSNM2L | Participant | [View Tx](https://stellar.expert/explorer/testnet/tx/9356ffb5e64ef4f9c495ae299a869929a0ed3ad1b3727c861501a7f52d8a35a3) |
+| JAYANT VAIBHAV | GAW2TZETZNJ6JRMJQNEXRCZ54Z2MRW7YKHGUB2FVYAJ7OEMMT42BLNPW | Participant | [View Tx](https://stellar.expert/explorer/testnet/tx/4d20f9485fb53c9576db579c0d519bbe0cbb2c9d3215fdf2c1008d38a1505d31) |
+| Rsnjan Mehta | GDAJAKIZCUOGKMEWMP4WJ2ENHJKJM6HS7U7DOLV6T6FYGRHTER7RT4Z5 | Participant | [View Tx](https://stellar.expert/explorer/testnet/tx/d4b39a6c94f4038e5deeae37f5fd9608f5fb1105b6f4578df94503f0a8d2d769) |
+| Akash Mondal | GDLEUUZIMYT2ZHLJOPBEFOT4YNPGVKHMH65RHPZCL2VCO6WOEULUT4NM | Participant | [View Tx](https://stellar.expert/explorer/testnet/tx/2473ff41bda79dcc6b59670321a4c9092cdfb2faf475d782add4c455c824413e) |
 
 
 CarbonReward solves this by natively locking XLM rewards into a smart contract that releases instantly upon verification. Organizations deposit XLM when creating a campaign. Users participate, submit proof of their work, and once the organization supervisor approves it, the user claims their XLM from the smart contract peer-to-peer. It's fast, completely transparent, and provides on-chain verifiable proof of environmental impact.
@@ -90,24 +118,3 @@ contracts/  Soroban (Rust) — smart contract for holding and distributing XLM
 | Smart Contract | Soroban (Rust) |
 | Deployment | Vercel (frontend) + Render (backend) |
 
-## Product Screenshots
-
-### Product UI
-- **Dashboard Overview**:
-  ![Dashboard Screenshot](./images/placeholder_dashboard.png)
-  
-### Mobile Responsive Design
-- **Mobile View**: Fully responsive across all devices.
-  ![Mobile Design](./images/placeholder_mobile.png)
-
-### Analytics Dashboard
-- **Live Telemetry**:
-  ![Analytics Dashboard](./images/placeholder_analytics.png)
-
-## Users Onboarded
-
-Below is the list of users who actively tested the platform and provided feedback:
-
-| User ID | Name | Email | Wallet Address | Feedback Summary |
-|---|---|---|---|---|
-| 1 | [Placeholder] | [Placeholder] | `[Placeholder]` | [Placeholder] |
