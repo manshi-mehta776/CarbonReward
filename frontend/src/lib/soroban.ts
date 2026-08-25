@@ -21,7 +21,7 @@ export const soroban = {
     let status = response.status as string;
     let txHash = response.hash;
     let retries = 0;
-    while (status === "PENDING" && retries < 15) {
+    while (status !== rpc.Api.GetTransactionStatus.SUCCESS && status !== rpc.Api.GetTransactionStatus.FAILED && retries < 15) {
       await new Promise((r) => setTimeout(r, 2000));
       const res = await rpcServer.getTransaction(txHash);
       status = res.status as string;
