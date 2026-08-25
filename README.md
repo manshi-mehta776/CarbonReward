@@ -118,3 +118,21 @@ contracts/  Soroban (Rust) — smart contract for holding and distributing XLM
 | Smart Contract | Soroban (Rust) |
 | Deployment | Vercel (frontend) + Render (backend) |
 
+
+
+## ✅ Level 4 Submission Checklist
+
+- [x] **Production MVP (Testnet/Mainnet)**: Deployed to Vercel (frontend) and Render (backend) with Soroban contracts on Stellar Testnet.
+- [x] **10+ real users interacting with the dApp**: 11 beta testers onboarded (see table above).
+- [x] **Responsive & polished UI**: Fully responsive Tailwind CSS design.
+- [x] **Proper error handling & edge cases**: Implemented graceful wallet disconnects, zero-balance faucet warnings, and prevented double-clicking during pending transactions.
+- [x] **Demo video walkthrough**: Linked in the Quick Links section.
+- [x] **At least 15+ meaningful commits**: Active repository with granular feature commits.
+- [x] **README with complete documentation**: Comprehensive architecture, feedback tables, and workflow documented.
+- [x] **User Feedback collection & summary**: 11 user responses collected, summarized in USER_FEEDBACK_SUMMARY.md, with 5 direct improvements implemented.
+- [x] **Contract deployment address**: CCOBDHZRQKRIMAJRQ3ULVPT6WUQYEHXIW25YIJBWIRKD75AXM3BMMP7P
+- [x] **Screenshots showing**:
+  - [x] Product UI
+  - [x] Mobile responsive design
+  - [x] Analytics or monitoring setup
+- [x] **Proof of 10+ user wallet interactions**: Documented in the Proof of Transaction table with direct Stellar Expert links.
