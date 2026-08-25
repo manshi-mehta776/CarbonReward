@@ -30,9 +30,16 @@ export function CampaignCard(props: CampaignCardProps) {
         )}
       </div>
       <div className="p-5">
-        <span className="mb-2 inline-block rounded-full bg-brand-100 px-3 py-1 text-xs font-semibold text-brand-700 dark:bg-brand-900/40 dark:text-brand-300">
-          {props.category.replace(/_/g, " ")}
-        </span>
+        <div className="mb-2 flex items-center justify-between">
+          <span className="inline-block rounded-full bg-brand-100 px-3 py-1 text-xs font-semibold text-brand-700 dark:bg-brand-900/40 dark:text-brand-300">
+            {props.category.replace(/_/g, " ")}
+          </span>
+          {(props.participantCount ?? 0) >= props.maxParticipants && (
+            <span className="inline-block rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-300">
+              Full
+            </span>
+          )}
+        </div>
         <h3 className="mb-2 font-semibold text-slate-900 dark:text-white line-clamp-1">{props.title}</h3>
 
         <div className="mb-4 flex flex-wrap gap-3 text-xs text-slate-500 dark:text-slate-400">
