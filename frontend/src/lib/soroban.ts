@@ -66,10 +66,9 @@ export const soroban = {
     if (rpc.Api.isSimulationRestore(sim)) {
       throw new Error("Contract needs state restoration. Simulation returned restore response.");
     }
-    if (!rpc.Api.isSimulationSuccess(sim)) {
-      console.error("Simulation response:", sim);
-      throw new Error("Simulation was not successful.");
-    }
+    
+    // Throw sim to see exactly what Soroban RPC returned
+    throw new Error(`DEBUG_SIM: ${JSON.stringify(sim)}`);
     
     if (!sim.result) {
       console.error("Simulation returned invalid results:", sim);
