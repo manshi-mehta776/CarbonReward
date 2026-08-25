@@ -63,6 +63,13 @@ export const soroban = {
     if (rpc.Api.isSimulationError(sim)) {
       throw new Error(`Simulation failed: ${sim.error}`);
     }
+    if (rpc.Api.isSimulationRestore(sim)) {
+      throw new Error("Contract needs state restoration. Simulation returned restore response.");
+    }
+    if (!rpc.Api.isSimulationSuccess(sim)) {
+      console.error("Simulation response:", sim);
+      throw new Error("Simulation was not successful.");
+    }
     
     // @ts-ignore
     const preparedTx = rpc.assembleTransaction(tx, networkPassphrase, sim).build();
@@ -91,6 +98,8 @@ export const soroban = {
 
     const sim = await rpcServer.simulateTransaction(tx);
     if (rpc.Api.isSimulationError(sim)) throw new Error(sim.error);
+    if (rpc.Api.isSimulationRestore(sim)) throw new Error("Contract needs state restoration.");
+    if (!rpc.Api.isSimulationSuccess(sim)) throw new Error("Simulation was not successful.");
     const networkPassphrase = Networks[NETWORK as keyof typeof Networks];
     // @ts-ignore
     const preparedTx = rpc.assembleTransaction(tx, networkPassphrase, sim).build();
@@ -118,6 +127,8 @@ export const soroban = {
 
     const sim = await rpcServer.simulateTransaction(tx);
     if (rpc.Api.isSimulationError(sim)) throw new Error(sim.error);
+    if (rpc.Api.isSimulationRestore(sim)) throw new Error("Contract needs state restoration.");
+    if (!rpc.Api.isSimulationSuccess(sim)) throw new Error("Simulation was not successful.");
     const networkPassphrase = Networks[NETWORK as keyof typeof Networks];
     // @ts-ignore
     const preparedTx = rpc.assembleTransaction(tx, networkPassphrase, sim).build();
