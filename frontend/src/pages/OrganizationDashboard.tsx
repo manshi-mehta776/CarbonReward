@@ -237,9 +237,6 @@ function PendingVerifications() {
     onError: (err: any) => toast.error(err.response?.data?.message ?? "Failed to verify"),
   });
 
-  if (isLoading) return <div>Loading pending verifications...</div>;
-  if (!pending || pending.length === 0) return null;
-
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold text-slate-900 dark:text-white">Pending Verifications</h2>
@@ -254,33 +251,43 @@ function PendingVerifications() {
             </tr>
           </thead>
           <tbody>
-            {pending.map((p) => (
-              <tr key={p._id} className="border-t border-slate-100 dark:border-slate-800">
-                <td className="px-4 py-3 font-medium text-slate-800 dark:text-white">{p.participant?.name || "Participant"}</td>
-                <td className="px-4 py-3">{p.campaign?.title}</td>
-                <td className="px-4 py-3">
-                  <a href={p.proof?.mediaUrls?.[0]} target="_blank" rel="noreferrer" className="text-brand-600 hover:underline">
-                    View Image
-                  </a>
-                </td>
-                <td className="px-4 py-3 text-right space-x-2">
-                  <button
-                    onClick={() => verifyMutation.mutate({ id: p._id, approved: true })}
-                    disabled={verifyMutation.isPending}
-                    className="rounded bg-emerald-100 px-3 py-1 font-medium text-emerald-700 hover:bg-emerald-200"
-                  >
-                    Approve
-                  </button>
-                  <button
-                    onClick={() => verifyMutation.mutate({ id: p._id, approved: false })}
-                    disabled={verifyMutation.isPending}
-                    className="rounded bg-red-100 px-3 py-1 font-medium text-red-700 hover:bg-red-200"
-                  >
-                    Reject
-                  </button>
-                </td>
+            {isLoading ? (
+              <tr>
+                <td colSpan={4} className="px-4 py-8 text-center text-slate-400">Loading pending verifications...</td>
               </tr>
-            ))}
+            ) : !pending || pending.length === 0 ? (
+              <tr>
+                <td colSpan={4} className="px-4 py-8 text-center text-slate-400">No pending verifications at the moment.</td>
+              </tr>
+            ) : (
+              pending.map((p) => (
+                <tr key={p._id} className="border-t border-slate-100 dark:border-slate-800">
+                  <td className="px-4 py-3 font-medium text-slate-800 dark:text-white">{p.participant?.name || "Participant"}</td>
+                  <td className="px-4 py-3">{p.campaign?.title}</td>
+                  <td className="px-4 py-3">
+                    <a href={p.proof?.mediaUrls?.[0]} target="_blank" rel="noreferrer" className="text-brand-600 hover:underline">
+                      View Image
+                    </a>
+                  </td>
+                  <td className="px-4 py-3 text-right space-x-2">
+                    <button
+                      onClick={() => verifyMutation.mutate({ id: p._id, approved: true })}
+                      disabled={verifyMutation.isPending}
+                      className="rounded bg-emerald-100 px-3 py-1 font-medium text-emerald-700 hover:bg-emerald-200"
+                    >
+                      Approve
+                    </button>
+                    <button
+                      onClick={() => verifyMutation.mutate({ id: p._id, approved: false })}
+                      disabled={verifyMutation.isPending}
+                      className="rounded bg-red-100 px-3 py-1 font-medium text-red-700 hover:bg-red-200"
+                    >
+                      Reject
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
