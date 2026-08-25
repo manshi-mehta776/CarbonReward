@@ -64,7 +64,6 @@ export const soroban = {
       throw new Error(`Simulation failed: ${sim.error}`);
     }
     
-    const networkPassphrase = Networks[NETWORK as keyof typeof Networks];
     // @ts-ignore
     const preparedTx = rpc.assembleTransaction(tx, networkPassphrase, sim).build();
     
