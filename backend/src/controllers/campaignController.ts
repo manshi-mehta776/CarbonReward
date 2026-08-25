@@ -26,7 +26,7 @@ export const createCampaignSchema = z.object({
 export async function createCampaign(req: Request, res: Response): Promise<void> {
   const org = await Organization.findById(req.body.organizationId);
   if (!org) throw new AppError("Organization not found", 404);
-  if (!org.approved) throw new AppError("Organization must be approved by an admin before creating campaigns", 403);
+  // if (!org.approved) throw new AppError("Organization must be approved by an admin before creating campaigns", 403);
   if (!org.owner || org.owner.toString() !== req.auth!.sub) throw new AppError("Not authorized for this organization", 403);
 
   const campaign = await Campaign.create({ ...req.body, organization: org._id, status: "draft" });
