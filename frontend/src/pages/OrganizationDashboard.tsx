@@ -232,12 +232,12 @@ function PendingVerifications() {
   });
 
   const verifyMutation = useMutation({
-    mutationFn: async ({ id, approved, campaignId, participantAddress }: { id: string; approved: boolean; campaignId?: number; participantAddress?: string }) => {
+    mutationFn: async ({ id, approved, campaignId, participantAddress, reason }: { id: string; approved: boolean; campaignId?: number; participantAddress?: string; reason?: string }) => {
       if (campaignId !== undefined && campaignId !== null && participantAddress) {
         toast.success("Verifying activity on-chain... Please approve transaction.");
-        await soroban.verifyActivity(user!.walletAddress!, campaignId, participantAddress, approved, "Verified by org");
+        await soroban.verifyActivity(user!.walletAddress!, campaignId, participantAddress, approved, reason || (approved ? "Verified by org" : "Rejected"));
       }
-      return await api.post(`/participations/${id}/verify`, { approved, comment: "Verified by org" });
+      return await api.post(`/participations/${id}/verify`, { approved, comment: reason || (approved ? "Verified by org" : "Rejected") });
     },
     onSuccess: () => {
       toast.success("Verification submitted!");
@@ -291,7 +291,12 @@ function PendingVerifications() {
                             <CheckCircle size={18} />
                           </button>
                           <button
-                            onClick={() => verifyMutation.mutate({ id: p._id, approved: false, campaignId: p.campaign?.onChainId, participantAddress: p.participant?.walletAddress })}
+                            onClick={() => {
+                              const reason = window.prompt("Reason for rejection:");
+                              if (reason !== null) {
+                                verifyMutation.mutate({ id: p._id, approved: false, campaignId: p.campaign?.onChainId, participantAddress: p.participant?.walletAddress, reason });
+                              }
+                            }}
                             className="text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-lg transition-colors"
                             title="Reject"
                           >Reject
