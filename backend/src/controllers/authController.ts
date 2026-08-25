@@ -78,7 +78,7 @@ export async function me(req: Request, res: Response): Promise<void> {
 
 export const connectWalletSchema = z.object({
   body: z.object({
-    walletAddress: z.string().min(56).max(56, "Invalid Stellar public key length"),
+    walletAddress: z.string().min(56).max(56, "Invalid Stellar public key length").nullable().optional(),
   }),
 });
 
@@ -86,8 +86,10 @@ export async function connectWallet(req: Request, res: Response): Promise<void> 
   const { walletAddress } = req.body;
 
   // Prevent one wallet from being attached to multiple accounts (sybil guard).
-  const inUse = await User.findOne({ walletAddress, _id: { $ne: req.auth!.sub } });
-  if (inUse) throw new AppError("This wallet is already linked to another account", 409);
+  if (walletAddress) {
+    const inUse = await User.findOne({ walletAddress, _id: { $ne: req.auth!.sub } });
+    if (inUse) throw new AppError("This wallet is already linked to another account", 409);
+  }
 
   const user = await User.findByIdAndUpdate(
     req.auth!.sub,
