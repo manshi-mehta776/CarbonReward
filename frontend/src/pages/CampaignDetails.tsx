@@ -43,7 +43,10 @@ export default function CampaignDetails() {
 
   const submitProofMutation = useMutation({
     mutationFn: async () => {
-      // Dummy proof for now, simulating upload
+      if (data?.onChainId !== undefined && data?.onChainId !== null) {
+        toast.success("Submitting proof on-chain... Please approve transaction.");
+        await soroban.submitProof(user!.walletAddress!, data.onChainId, "dummyhash");
+      }
       return await api.post(`/campaigns/${id}/proof`, {
         mediaUrls: ["https://example.com/proof.jpg"],
         description: "I completed the environmental activity!",

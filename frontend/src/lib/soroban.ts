@@ -2,7 +2,7 @@ import { Contract, nativeToScVal, Address, TransactionBuilder, Networks, Asset, 
 import { wallet } from "./wallet";
 import { rpc } from "@stellar/stellar-sdk";
 
-const CONTRACT_ID = import.meta.env.VITE_CAMPAIGN_CONTRACT_ID;
+const CONTRACT_ID = "CCOBDHZRQKRIMAJRQ3ULVPT6WUQYEHXIW25YIJBWIRKD75AXM3BMMP7P";
 const NETWORK = import.meta.env.VITE_STELLAR_NETWORK || "TESTNET";
 
 const rpcServer = new rpc.Server("https://soroban-testnet.stellar.org");
@@ -143,6 +143,66 @@ export const soroban = {
     if (!sim.result) {
       throw new Error("Simulation returned invalid results. Check console for details.");
     }
+    
+    // @ts-ignore
+    const preparedTx = rpc.assembleTransaction(tx, sim).build();
+    return await this.submitTransaction(preparedTx.toXDR());
+  },
+
+  async submitProof(participantAddress: string, campaignId: number, proofHash: string) {
+    if (!CONTRACT_ID) throw new Error("Contract ID not set");
+    
+    const contract = new Contract(CONTRACT_ID);
+    const source = await rpcServer.getAccount(participantAddress);
+    
+    const tx = new TransactionBuilder(source, {
+      fee: "100000",
+      networkPassphrase: Networks[NETWORK as keyof typeof Networks],
+    })
+      .addOperation(
+        contract.call("submit_proof",
+          new Address(participantAddress).toScVal(),
+          nativeToScVal(campaignId, { type: "u64" }),
+          nativeToScVal(proofHash, { type: "string" })
+        )
+      )
+      .setTimeout(30)
+      .build();
+
+    const sim = await rpcServer.simulateTransaction(tx);
+    if (rpc.Api.isSimulationError(sim)) throw new Error(sim.error);
+    if (rpc.Api.isSimulationRestore(sim)) throw new Error("Contract needs state restoration.");
+    
+    // @ts-ignore
+    const preparedTx = rpc.assembleTransaction(tx, sim).build();
+    return await this.submitTransaction(preparedTx.toXDR());
+  },
+
+  async verifyActivity(supervisorAddress: string, campaignId: number, participantAddress: string, approved: boolean, comment: string) {
+    if (!CONTRACT_ID) throw new Error("Contract ID not set");
+    
+    const contract = new Contract(CONTRACT_ID);
+    const source = await rpcServer.getAccount(supervisorAddress);
+    
+    const tx = new TransactionBuilder(source, {
+      fee: "100000",
+      networkPassphrase: Networks[NETWORK as keyof typeof Networks],
+    })
+      .addOperation(
+        contract.call("verify_activity",
+          new Address(supervisorAddress).toScVal(),
+          nativeToScVal(campaignId, { type: "u64" }),
+          new Address(participantAddress).toScVal(),
+          nativeToScVal(approved, { type: "bool" }),
+          nativeToScVal(comment, { type: "string" })
+        )
+      )
+      .setTimeout(30)
+      .build();
+
+    const sim = await rpcServer.simulateTransaction(tx);
+    if (rpc.Api.isSimulationError(sim)) throw new Error(sim.error);
+    if (rpc.Api.isSimulationRestore(sim)) throw new Error("Contract needs state restoration.");
     
     // @ts-ignore
     const preparedTx = rpc.assembleTransaction(tx, sim).build();

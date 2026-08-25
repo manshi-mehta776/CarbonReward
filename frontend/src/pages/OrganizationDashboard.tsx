@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Wallet, Plus } from "lucide-react";
+import { Wallet, Plus, CheckCircle } from "lucide-react";
 import { api } from "../lib/api";
 import { wallet } from "../lib/wallet";
 import { soroban } from "../lib/soroban";
@@ -224,6 +224,7 @@ export default function OrganizationDashboard() {
 
 function PendingVerifications() {
   const queryClient = useQueryClient();
+  const { user } = useAuthStore();
   const { data: pending, isLoading, error } = useQuery({
     queryKey: ["pending-verifications"],
     queryFn: async () => (await api.get("/participations/pending")).data.data as any[],
@@ -231,13 +232,18 @@ function PendingVerifications() {
   });
 
   const verifyMutation = useMutation({
-    mutationFn: async ({ id, approved }: { id: string; approved: boolean }) =>
-      await api.post(`/participations/${id}/verify`, { approved, comment: approved ? "Great job!" : "Invalid proof" }),
+    mutationFn: async ({ id, approved, campaignId, participantAddress }: { id: string; approved: boolean; campaignId?: number; participantAddress?: string }) => {
+      if (campaignId !== undefined && campaignId !== null && participantAddress) {
+        toast.success("Verifying activity on-chain... Please approve transaction.");
+        await soroban.verifyActivity(user!.walletAddress!, campaignId, participantAddress, approved, "Verified by org");
+      }
+      return await api.post(`/participations/${id}/verify`, { approved, comment: "Verified by org" });
+    },
     onSuccess: () => {
       toast.success("Verification submitted!");
       queryClient.invalidateQueries({ queryKey: ["pending-verifications"] });
     },
-    onError: (err: any) => toast.error(err.response?.data?.message ?? "Failed to verify"),
+    onError: (err: any) => toast.error(err.response?.data?.message ?? err.message ?? "Verification failed"),
   });
 
   return (
@@ -277,19 +283,18 @@ function PendingVerifications() {
                     </a>
                   </td>
                   <td className="px-4 py-3 text-right space-x-2">
-                    <button
-                      onClick={() => verifyMutation.mutate({ id: p._id, approved: true })}
-                      disabled={verifyMutation.isPending}
-                      className="rounded bg-emerald-100 px-3 py-1 font-medium text-emerald-700 hover:bg-emerald-200"
-                    >
-                      Approve
-                    </button>
-                    <button
-                      onClick={() => verifyMutation.mutate({ id: p._id, approved: false })}
-                      disabled={verifyMutation.isPending}
-                      className="rounded bg-red-100 px-3 py-1 font-medium text-red-700 hover:bg-red-200"
-                    >
-                      Reject
+                          <button
+                            onClick={() => verifyMutation.mutate({ id: p._id, approved: true, campaignId: p.campaign?.onChainId, participantAddress: p.participant?.walletAddress })}
+                            className="text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100 p-2 rounded-lg transition-colors"
+                            title="Approve"
+                          >
+                            <CheckCircle size={18} />
+                          </button>
+                          <button
+                            onClick={() => verifyMutation.mutate({ id: p._id, approved: false, campaignId: p.campaign?.onChainId, participantAddress: p.participant?.walletAddress })}
+                            className="text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-lg transition-colors"
+                            title="Reject"
+                          >Reject
                     </button>
                   </td>
                 </tr>
