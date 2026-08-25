@@ -2,8 +2,9 @@ import { useParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { MapPin, Users, Coins, Calendar } from "lucide-react";
-import { api } from "../lib/api";
 import { useAuthStore } from "../store/authStore";
+import { soroban } from "../lib/soroban";
+import { api } from "../lib/api";
 
 export default function CampaignDetails() {
   const { id } = useParams();
@@ -56,8 +57,11 @@ export default function CampaignDetails() {
   const claimMutation = useMutation({
     mutationFn: async () => {
       toast.success("Claiming reward on-chain... Please approve transaction.");
-      // In a real app we'd call soroban.claimReward here, but we don't have the on-chain numeric ID in the DB easily accessible right now, so we'll mock the claim for demo if it's missing, or we can just call the backend.
-      return await api.post(`/participations/${participation._id}/claim`, { claimTxHash: "mock_tx_hash" });
+      let txHash = "mock_tx_hash";
+      if (participation.campaign?.onChainId !== undefined && participation.campaign?.onChainId !== null) {
+        txHash = await soroban.claimReward(user!.walletAddress!, participation.campaign.onChainId);
+      }
+      return await api.post(`/participations/${participation._id}/claim`, { claimTxHash: txHash });
     },
     onSuccess: () => {
       toast.success("Reward claimed successfully!");
@@ -128,6 +132,16 @@ export default function CampaignDetails() {
                 <div className="rounded-xl bg-slate-50 p-4 text-slate-600 border border-slate-200">
                   <strong className="block mb-1">Reward Claimed!</strong>
                   You have successfully claimed the reward for this campaign.
+                  {participation.reward?.claimTxHash && participation.reward.claimTxHash !== "mock_tx_hash" && (
+                    <a
+                      href={`https://stellar.expert/explorer/testnet/tx/${participation.reward.claimTxHash}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-2 inline-block text-brand-600 hover:underline"
+                    >
+                      View Transaction on Stellar Expert ↗
+                    </a>
+                  )}
                 </div>
               ) : (
                 <div className="text-red-500">Your proof was rejected.</div>

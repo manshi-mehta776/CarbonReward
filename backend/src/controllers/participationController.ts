@@ -132,6 +132,6 @@ export async function recordClaim(req: Request, res: Response): Promise<void> {
 
 export async function myParticipations(req: Request, res: Response): Promise<void> {
   const items = await Participation.find({ participant: req.auth!.sub })
-    .populate("campaign", "title category coverImageUrl rewardPerParticipant rewardTokenSymbol");
+    .populate("campaign", "title category coverImageUrl rewardPerParticipant rewardTokenSymbol onChainId");
   res.json({ success: true, data: items });
 }
