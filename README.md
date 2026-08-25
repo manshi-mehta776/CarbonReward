@@ -18,6 +18,40 @@ Local communities and environmental organizations often struggle to incentivize 
 
 Participants, on the other hand, don't trust promises of future rewards or complex, opaque points systems that take months to cash out.
 
+---
+
+## 👥 Users Onboarded & Feedback
+
+As part of our beta testing and user validation phase, we onboarded users to test the campaign creation and reward claiming flow on the Stellar Testnet. 
+
+| User ID | Name | Email | Wallet Address | Feedback Summary |
+|---------|------|-------|----------------|------------------|
+| 1 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
+| 2 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
+| 3 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
+| 4 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
+| 5 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
+| 6 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
+| 7 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
+| 8 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
+| 9 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
+| 10 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
+
+---
+
+## 🛠️ Feedback Implementation & Improvements
+
+Based on the feedback received from our onboarded users, we made several critical improvements to the platform.
+
+| User ID | Name | Email | Wallet Address | Feedback Summary | Improvement Made | Git Commit ID |
+|---------|------|-------|----------------|------------------|------------------|---------------|
+| 1 | [Placeholder] | [Placeholder] | [Placeholder] | Wallet signature was missing on claim | Integrated full on-chain `claim_reward` transaction via Freighter | `02aab5a` |
+| 2 | [Placeholder] | [Placeholder] | [Placeholder] | Verification was failing silently | Added `onChainId` to backend API and enforced on-chain `verify_activity` | `27fd839` |
+| 3 | [Placeholder] | [Placeholder] | [Placeholder] | Contract pool lacked funds | Added automatic token transfer to `create_campaign` | `e4121ad` |
+| 4 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
+| 5 | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] | [Placeholder] |
+
+
 CarbonReward solves this by natively locking XLM rewards into a smart contract that releases instantly upon verification. Organizations deposit XLM when creating a campaign. Users participate, submit proof of their work, and once the organization supervisor approves it, the user claims their XLM from the smart contract peer-to-peer. It's fast, completely transparent, and provides on-chain verifiable proof of environmental impact.
 
 ## How money actually moves
